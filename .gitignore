@@ -1,0 +1,18 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+
+# Node / frontend
+node_modules/
+dist/
+coverage/
+*.local
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+.env
