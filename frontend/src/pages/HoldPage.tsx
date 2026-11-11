@@ -49,7 +49,7 @@ export function HoldPage({ holdId }: { holdId: string }) {
     try {
       if (kind === 'pay') {
         await api.confirmHold(hold.holdId, studentId);
-        setMessage('Payment received. Admission confirmed!');
+        setMessage('Demo payment recorded. Admission confirmed.');
       } else {
         await api.cancelHold(hold.holdId, studentId);
         setMessage('Application cancelled.');
@@ -64,7 +64,7 @@ export function HoldPage({ holdId }: { holdId: string }) {
 
   return (
     <section>
-      <div className="page-heading"><span className="eyebrow">ONE STEP CLOSER</span><h1>Application details</h1><p className="hint">{status === 'HELD' ? 'Your seat is reserved. Complete the admission fee before the timer runs out.' : 'All the details of your admission, in one place.'}</p></div>
+      <div className="page-heading"><span className="eyebrow">APPLICATION STATUS</span><h1>Application details</h1><p className="hint">{status === 'HELD' ? 'This seat is reserved until the deadline below.' : 'Review the status and details of this application.'}</p></div>
       {error && <Alert>{error.message} (retrying automatically)</Alert>}
       {actionError && <Alert onClose={() => setActionError('')}>{actionError}</Alert>}
       {message && (
@@ -95,10 +95,11 @@ export function HoldPage({ holdId }: { holdId: string }) {
 
         {status === 'EXPIRED' && <Alert kind="info">The time to pay ran out and the seat was released. You can apply again from the class list if seats are free.</Alert>}
         {status === 'CANCELLED' && <Alert kind="info">This application was cancelled and its seat was released. You can browse classes to start a new application.</Alert>}
-        {status === 'CONFIRMED' && <Alert kind="success">Admission confirmed! Your child's next chapter is ready to begin.</Alert>}
+        {status === 'CONFIRMED' && <Alert kind="success">Admission confirmed for this student.</Alert>}
         {!isOwner && <Alert kind="info">This application belongs to a different birth registration number, so you cannot pay for or cancel it.</Alert>}
         {isOwner && !studentId && status === 'HELD' && <Alert kind="info">Enter the birth registration number at the top to pay or cancel.</Alert>}
 
+        {status === 'HELD' && isOwner && <p className="demo-payment-note">Payment is simulated for this assignment. Clicking “Pay admission fee” confirms the admission; no money is charged.</p>}
         {status === 'HELD' && <div className="actions">
           <button type="button" onClick={() => run('pay')} disabled={!canAct}>
             <Icon name="check" />{busy === 'pay' ? 'Paying…' : 'Pay admission fee'}

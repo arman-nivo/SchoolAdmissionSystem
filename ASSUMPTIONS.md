@@ -80,6 +80,11 @@ Things the brief left open, what I chose, and why.
   always loaded from the server, so they survive refresh and browser restart.
 - A small hash router (`#/classes`, `#/holds/{id}`, `#/me`, `#/admin`) keeps the
   current page across refresh without extra libraries.
+- Class cards open an existing hold or confirmed admission for the selected
+  student. The application list puts holds awaiting payment first, ordered by
+  deadline, and uses cards on narrow screens instead of a wide table.
+- The payment button says "Pay admission fee" to match the brief. The page
+  explains that this is a demo action and no money is charged.
 - The admin screen is not protected, because the brief has no login.
 - UI text is in English, to match the API error messages.
 

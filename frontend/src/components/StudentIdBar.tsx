@@ -24,7 +24,7 @@ export function StudentIdBar() {
     <form className={`student-bar ${studentId ? 'identity-active' : ''}`} onSubmit={submit} aria-label="Student identity" noValidate>
       <div className="identity-heading"><span className="identity-icon"><Icon name={studentId ? 'check' : 'user'} /></span><div>
         <label htmlFor="student-id">Student birth registration no.</label>
-        <p id="student-id-help">{studentId ? 'Student selected. You’re ready to apply.' : 'Start here. Enter the student’s 17-digit number to apply.'}</p>
+        <p id="student-id-help">{studentId ? 'Applications and class actions now use this student number.' : 'Enter the student’s 17-digit number to apply or check applications.'}</p>
       </div></div>
       <div className="identity-controls">
       <input

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { StudentIdProvider } from '../hooks/useStudentId';
+import { StudentIdProvider } from '../hooks/StudentIdProvider';
 import { ClassListPage } from './ClassListPage';
 
 const json = (status: number, body: unknown) =>
@@ -20,7 +20,10 @@ const renderPage = () =>
   );
 
 describe('ClassListPage', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    window.location.hash = '';
+  });
 
   it('shows seat counts and disables Apply for a full class', async () => {
     localStorage.setItem('school-admission.studentId', '20152691234567890');
@@ -80,5 +83,26 @@ describe('ClassListPage', () => {
     expect(screen.getByText('Class 6 - Morning Shift')).toBeInTheDocument();
     expect(screen.queryByText('Class 6 - Day Shift')).not.toBeInTheDocument();
     expect(screen.getByText('Showing 1 of 2 classes')).toBeInTheDocument();
+  });
+
+  it('opens an existing application instead of trying to reserve another seat', async () => {
+    localStorage.setItem('school-admission.studentId', '20152691234567890');
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(async (url) => {
+      if (String(url).endsWith('/me/holds')) {
+        return json(200, [
+          { holdId: 'h_held', classId: 'c_1', studentId: '20152691234567890', status: 'HELD', expiresAt: '2099-01-01T00:00:00Z' },
+          { holdId: 'h_confirmed', classId: 'c_2', studentId: '20152691234567890', status: 'CONFIRMED', expiresAt: '2099-01-01T00:00:00Z' },
+        ]);
+      }
+      return json(200, classes);
+    });
+
+    renderPage();
+
+    await userEvent.click(await screen.findByRole('button', { name: 'View application' }));
+    expect(window.location.hash).toBe('#/holds/h_held');
+    expect(screen.getByRole('button', { name: 'View admission' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'Apply' })).not.toBeInTheDocument();
+    expect(fetchSpy.mock.calls.every(([, init]) => init?.method !== 'POST')).toBe(true);
   });
 });

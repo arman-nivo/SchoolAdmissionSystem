@@ -36,9 +36,12 @@ class and application. (`docker compose down -v` wipes the data.)
    **Use this number**. This is the student's identity (no login).
 3. **Browse classes**: search by class name or shift, filter for available seats,
    and see total / on hold / confirmed / available seats (refreshes every 3 s).
-   Press **Apply** to reserve a seat.
+   Press **Apply** to reserve a seat. If the selected student already has an
+   active application, the card opens it instead of starting another.
 4. The application page shows the countdown, **Pay admission fee** and **Cancel**.
-5. **My applications** lists every application of that student.
+   Payment is simulated for this assignment; no money is charged.
+5. **My applications** lists every application of that student. Pending payments
+   appear first, ordered by the nearest deadline.
 
 ## Configuration
 
@@ -63,7 +66,7 @@ HOLD_DURATION_SECONDS=60 docker compose up --build
 ## Tests
 
 Backend: 20 integration tests that run the real API against a real PostgreSQL,
-including the concurrency tests. Frontend: 12 Vitest + Testing Library tests.
+including the concurrency tests. Frontend: 14 Vitest + Testing Library tests.
 
 With Docker only:
 

@@ -4,7 +4,8 @@
 
 - **Claude Code** (Anthropic) was used for the initial implementation.
 - **OpenAI Codex** was used later for the UI redesign, a review against the
-  assignment, and a fix to application polling when switching students.
+  assignment, a fix to application polling when switching students, and a
+  usability and code clarity pass.
 
 ## What it was used for
 
@@ -18,9 +19,13 @@
 - Codex: redesigning the navigation, class list, forms, and application pages;
   adding class search and availability filters; adding frontend tests; checking
   the PDF requirements against the code; and correcting stale polling responses
-  after a student identity change.
+  after a student identity change. A later pass added direct links to existing
+  applications from class cards, deadline ordering and a summary on the
+  application page, a compact mobile layout, and clear demo payment wording.
+  The student identity context, provider, and hook were split into small files
+  so their responsibilities are easier to follow and lint runs without warnings.
 
-I reviewed the code, ran it, and checked each rule in the brief against it.
+The changes were checked with frontend tests, lint, and a production build.
 
 ## Where the AI got things wrong, and how it was caught
 

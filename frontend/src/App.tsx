@@ -1,6 +1,6 @@
 import { StudentIdBar } from './components/StudentIdBar';
 import { useHashRoute } from './hooks/useHashRoute';
-import { StudentIdProvider } from './hooks/useStudentId';
+import { StudentIdProvider } from './hooks/StudentIdProvider';
 import { ClassListPage } from './pages/ClassListPage';
 import { CreateClassPage } from './pages/CreateClassPage';
 import { HoldPage } from './pages/HoldPage';
@@ -29,7 +29,7 @@ export default function App() {
       <aside className="sidebar">
         <a className="brand" href="#/classes" aria-label="School Admission home">
           <span className="brand-mark"><Icon name="school" /></span>
-          <span>School Admission<small>A place to begin.</small></span>
+          <span>School Admission<small>Application portal</small></span>
         </a>
         <div className="nav-label">ADMISSION PORTAL</div>
         <nav aria-label="Main navigation">
@@ -42,21 +42,21 @@ export default function App() {
         </nav>
         <div className="sidebar-note">
           <span className="note-icon"><Icon name="book" /></span>
-          <h3>A little preparation.<br />A big step forward.</h3>
-          <p>Keep the student's birth registration number ready to begin their application.</p>
-          <a href="#/classes">Explore classes <Icon name="arrow" /></a>
+          <h3>Before you apply</h3>
+          <p>Have the student's 17-digit birth registration number ready. Seat reservations expire if payment is not completed in time.</p>
+          <a href="#/classes">Browse classes <Icon name="arrow" /></a>
         </div>
-        <div className="sidebar-footer"><span className="status-dot" />Simple steps. Bright futures.</div>
+        <div className="sidebar-footer"><span className="status-dot" />Admissions portal</div>
       </aside>
       <div className="workspace">
         <header className="topbar">
           <div><span className="muted">Admission portal</span><span className="breadcrumb-slash">/</span><strong>{route === '/admin' ? 'Create a class' : route === '/me' ? 'My applications' : route.startsWith('/holds/') ? 'Application details' : 'Browse classes'}</strong></div>
-          <span className="topbar-note"><Icon name="school" /> Your next chapter starts here</span>
+          <span className="topbar-note"><Icon name="school" /> Class seats update automatically</span>
         </header>
         <main id="main-content" tabIndex={-1}>
           <StudentIdBar />
           <Page key={route} route={route} />
-          <footer className="main-footer"><span>School Admission</span><span>Every great journey begins with a first step.</span></footer>
+          <footer className="main-footer"><span>School Admission</span><span>Need to check a deadline? Open My applications.</span></footer>
         </main>
       </div>
     </StudentIdProvider>
