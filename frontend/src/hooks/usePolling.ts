@@ -18,33 +18,48 @@ export function usePolling<T>(fetcher: () => Promise<T>, intervalMs: number, dep
   const [data, setData] = useState<T>();
   const [error, setError] = useState<ApiError>();
   const [loading, setLoading] = useState(enabled);
+  const generation = useRef(0);
+  const latestRequest = useRef(0);
 
   // Always call the latest fetcher without restarting the timer on every render.
   const fetcherRef = useRef(fetcher);
   fetcherRef.current = fetcher;
 
   const run = useCallback(async () => {
+    const currentGeneration = generation.current;
+    const requestNumber = ++latestRequest.current;
     try {
       const result = await fetcherRef.current();
-      setData(result);
-      setError(undefined);
+      if (currentGeneration === generation.current && requestNumber === latestRequest.current) {
+        setData(result);
+        setError(undefined);
+      }
     } catch (e) {
-      setError(e instanceof ApiError ? e : new ApiError(0, 'UNKNOWN', 'Unexpected error.'));
+      if (currentGeneration === generation.current && requestNumber === latestRequest.current)
+        setError(e instanceof ApiError ? e : new ApiError(0, 'UNKNOWN', 'Unexpected error.'));
     } finally {
-      setLoading(false);
+      if (currentGeneration === generation.current && requestNumber === latestRequest.current)
+        setLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    generation.current += 1;
     if (!enabled) {
       setData(undefined);
+      setError(undefined);
       setLoading(false);
-      return;
+      return () => { generation.current += 1; };
     }
+    setData(undefined);
+    setError(undefined);
     setLoading(true);
     void run();
     const id = window.setInterval(() => void run(), intervalMs);
-    return () => window.clearInterval(id);
+    return () => {
+      generation.current += 1;
+      window.clearInterval(id);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, intervalMs, run, ...deps]);
 
