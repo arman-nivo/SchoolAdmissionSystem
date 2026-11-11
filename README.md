@@ -63,7 +63,7 @@ HOLD_DURATION_SECONDS=60 docker compose up --build
 ## Tests
 
 Backend: 20 integration tests that run the real API against a real PostgreSQL,
-including the concurrency tests. Frontend: 8 Vitest + Testing Library tests.
+including the concurrency tests. Frontend: 12 Vitest + Testing Library tests.
 
 With Docker only:
 
@@ -84,6 +84,10 @@ cd frontend
 npm ci
 npm test
 ```
+
+Use Node 20 as in the frontend Dockerfile. If using Node 25 locally, run
+`NODE_OPTIONS=--no-experimental-webstorage npm test` because its experimental
+global Web Storage can interfere with jsdom's test storage.
 
 Main concurrency tests (`backend/tests/SchoolAdmission.Tests/ConcurrencyTests.cs`):
 

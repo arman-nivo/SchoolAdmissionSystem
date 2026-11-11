@@ -1,17 +1,24 @@
 # AI usage
 
-## Tool
+## Tools
 
-**Claude Code** (Anthropic's AI coding agent).
+- **Claude Code** (Anthropic) was used for the initial implementation.
+- **OpenAI Codex** was used later for the UI redesign, a review against the
+  assignment, and a fix to application polling when switching students.
 
 ## What it was used for
 
-- Reading the assignment and proposing the plan (backend, frontend, Docker, docs).
-- Writing most of the code: the .NET API, EF Core model and migration, the
-  React pages, Dockerfiles, docker-compose, tests, and first drafts of
-  README / ASSUMPTIONS / this file.
-- Explaining the .NET, EF Core, PostgreSQL locking and Docker concepts so I
-  could understand and defend each decision.
+- Claude Code: reading the assignment and proposing the plan (backend,
+  frontend, Docker, docs).
+- Claude Code: writing most of the initial code: the .NET API, EF Core model
+  and migration, React pages, Dockerfiles, docker-compose, tests, and first
+  drafts of README / ASSUMPTIONS / this file.
+- Claude Code: explaining the .NET, EF Core, PostgreSQL locking and Docker
+  concepts so I could understand and defend each decision.
+- Codex: redesigning the navigation, class list, forms, and application pages;
+  adding class search and availability filters; adding frontend tests; checking
+  the PDF requirements against the code; and correcting stale polling responses
+  after a student identity change.
 
 I reviewed the code, ran it, and checked each rule in the brief against it.
 
@@ -34,3 +41,8 @@ I reviewed the code, ran it, and checked each rule in the brief against it.
 4. **Small things:** default template files (WeatherForecast, Vite demo) had to
    be removed; a validation message was duplicated; raw JSON parser errors were
    replaced with a clear "body is not valid JSON" message.
+5. **Previous student's applications could briefly appear after switching IDs.**
+   Codex found that an earlier polling request could finish after the new
+   student's request. The polling hook now ignores responses from an older
+   student or an older request. A test resolves requests in the wrong order to
+   check that only the selected student's applications remain visible.
