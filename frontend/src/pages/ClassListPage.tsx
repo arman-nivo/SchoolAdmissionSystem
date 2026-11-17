@@ -26,8 +26,6 @@ export function ClassListPage() {
     schoolClass.name.toLowerCase().includes(query.trim().toLowerCase()) &&
     (availability !== 'available' || schoolClass.availableSeats > 0),
   );
-  const totalAvailable = classes?.reduce((sum, schoolClass) => sum + schoolClass.availableSeats, 0);
-  const totalConfirmed = classes?.reduce((sum, schoolClass) => sum + schoolClass.confirmedSeats, 0);
 
   // The server can still report HELD for a few seconds after its deadline.
   // Use the same live status calculation as the application detail page.
@@ -58,42 +56,42 @@ export function ClassListPage() {
   return (
     <section aria-labelledby="classes-heading">
       <div className="welcome-panel">
-        <div>
-          <span className="eyebrow">SCHOOL ADMISSIONS</span>
-          <h1 id="classes-heading">Find a class.<br /><span>Reserve a seat.</span></h1>
-          <p>Choose a class and shift, then pay the admission fee before your reservation expires.</p>
-          <a
-            className="welcome-link"
-            href="#class-catalog"
-            onClick={(event) => {
-              event.preventDefault();
-              document.getElementById('class-catalog')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Browse classes <Icon name="arrow" />
-          </a>
+        <div className="welcome-copy">
+          <span className="hero-kicker"><Icon name="sparkle" /> ADMISSIONS MADE SIMPLE</span>
+          <h1 id="classes-heading">A brighter start<br />begins <em>here.</em></h1>
+          <p>Explore classes, reserve a seat, and follow every step of your child's admission in one place.</p>
+          <div className="hero-actions">
+            <a
+              className="hero-primary"
+              href="#class-catalog"
+              onClick={(event) => {
+                event.preventDefault();
+                document.getElementById('class-catalog')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Explore classes <Icon name="arrow" />
+            </a>
+            <a className="hero-secondary" href="#/me">Track an application</a>
+          </div>
         </div>
-        <div className="welcome-art" aria-hidden="true">
-          <div className="art-orbit" />
-          <span className="art-spark spark-one">✦</span>
-          <span className="art-spark spark-two">✧</span>
-          <div className="art-book"><Icon name="book" /></div>
-          <span className="art-caption">ADMISSIONS OPEN</span>
+        <div className="welcome-visual">
+          <img src="/images/school-campus.webp" alt="Students walking toward a school building" />
+          <span className="photo-caption"><Icon name="graduate" /> Every journey starts with a seat</span>
         </div>
       </div>
 
-      <div className="stats-grid" aria-label="Admission overview">
-        <div className="stat-card">
-          <span className="stat-icon mint"><Icon name="book" /></span>
-          <div><span className="stat-label">Classes</span><strong>{classes?.length ?? '—'}</strong><span className="stat-description">Across all shifts</span></div>
+      <div className="process-strip" aria-label="How to apply">
+        <div className="journey-step">
+          <span className="journey-icon"><Icon name="user" /></span>
+          <div><small>STEP 01</small><strong>Enter student ID</strong><span>Use the 17-digit birth registration number.</span></div>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon peach"><Icon name="people" /></span>
-          <div><span className="stat-label">Seats available</span><strong>{totalAvailable ?? '—'}</strong><span className="stat-description">Ready to reserve</span></div>
+        <div className="journey-step">
+          <span className="journey-icon"><Icon name="book" /></span>
+          <div><small>STEP 02</small><strong>Choose a class</strong><span>Check live seats and reserve a place.</span></div>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon lavender"><Icon name="check" /></span>
-          <div><span className="stat-label">Confirmed</span><strong>{totalConfirmed ?? '—'}</strong><span className="stat-description">Admissions completed</span></div>
+        <div className="journey-step">
+          <span className="journey-icon"><Icon name="wallet" /></span>
+          <div><small>STEP 03</small><strong>Confirm admission</strong><span>Complete the demo payment before time runs out.</span></div>
         </div>
       </div>
 
@@ -224,12 +222,6 @@ export function ClassListPage() {
           })}
         </div>
       )}
-      <div className="process-strip">
-        <span className="process-title"><Icon name="info" /> How it works</span>
-        <span><b>1</b> Enter student number</span><Icon name="arrow" />
-        <span><b>2</b> Reserve a seat</span><Icon name="arrow" />
-        <span><b>3</b> Pay before the deadline</span>
-      </div>
     </section>
   );
 }

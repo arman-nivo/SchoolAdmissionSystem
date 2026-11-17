@@ -11,6 +11,18 @@ expire on their own and the seat goes back to the pool.
 | Frontend  | React 18, TypeScript, Vite (no UI library)              |
 | Run       | Docker + docker compose                                 |
 
+## Interface preview
+
+Screenshots use sample class data. The student flow puts the ID, class search,
+and admission steps up front; the admin view shows live seat totals alongside
+the class form.
+
+| Student view | Admin dashboard |
+|---|---|
+| ![Student admission home](docs/preview/student-home.png) | ![Admin dashboard](docs/preview/admin-dashboard.png) |
+
+[See the mobile application view](docs/preview/applications-mobile.png).
+
 ## Run it (only Docker needed)
 
 ```bash
@@ -31,7 +43,8 @@ class and application. (`docker compose down -v` wipes the data.)
 
 ### Using the app
 
-1. **Create a class** in the navigation (admin): add e.g. `Class 6 - Morning Shift` with 120 seats.
+1. Open the **Admin dashboard** to see live seat totals and create a class,
+   e.g. `Class 6 - Morning Shift` with 120 seats.
 2. Type a 17-digit birth registration number in the box at the top and press
    **Use this number**. This is the student's identity (no login).
 3. **Browse classes**: search by class name or shift, filter for available seats,
@@ -66,7 +79,7 @@ HOLD_DURATION_SECONDS=60 docker compose up --build
 ## Tests
 
 Backend: 20 integration tests that run the real API against a real PostgreSQL,
-including the concurrency tests. Frontend: 14 Vitest + Testing Library tests.
+including the concurrency tests. Frontend: 16 Vitest + Testing Library tests.
 
 With Docker only:
 

@@ -22,6 +22,7 @@ export function HoldPage({ holdId }: { holdId: string }) {
   const [busy, setBusy] = useState<'pay' | 'cancel'>();
   const [actionError, setActionError] = useState('');
   const [message, setMessage] = useState('');
+  const [confirmingCancel, setConfirmingCancel] = useState(false);
 
   if (loading && !hold) return <div className="loading-state" role="status"><span className="loading-spinner" />Loading application…</div>;
   if (!hold) {
@@ -44,7 +45,7 @@ export function HoldPage({ holdId }: { holdId: string }) {
   const run = async (kind: 'pay' | 'cancel') => {
     setActionError('');
     setMessage('');
-    if (kind === 'cancel' && !window.confirm('Cancel this application? The seat will be given to someone else.')) return;
+    setConfirmingCancel(false);
     setBusy(kind);
     try {
       if (kind === 'pay') {
@@ -65,6 +66,11 @@ export function HoldPage({ holdId }: { holdId: string }) {
   return (
     <section>
       <div className="page-heading"><span className="eyebrow">APPLICATION STATUS</span><h1>Application details</h1><p className="hint">{status === 'HELD' ? 'This seat is reserved until the deadline below.' : 'Review the status and details of this application.'}</p></div>
+      <div className="application-progress" aria-label="Admission progress">
+        <div className="progress-stage done"><span><Icon name="check" /></span><strong>Seat selected</strong></div>
+        <div className={`progress-stage ${status === 'HELD' ? 'current' : status === 'CONFIRMED' ? 'done' : ''}`}><span><Icon name="wallet" /></span><strong>Payment</strong></div>
+        <div className={`progress-stage ${status === 'CONFIRMED' ? 'done' : ''}`}><span><Icon name="graduate" /></span><strong>Admission confirmed</strong></div>
+      </div>
       {error && <Alert>{error.message} (retrying automatically)</Alert>}
       {actionError && <Alert onClose={() => setActionError('')}>{actionError}</Alert>}
       {message && (
@@ -82,7 +88,7 @@ export function HoldPage({ holdId }: { holdId: string }) {
           {hold.studentId && (
             <>
               <dt>Birth registration no.</dt>
-              <dd>{hold.studentId}</dd>
+              <dd>{isOwner ? hold.studentId : '•••••••••••••••••'}</dd>
             </>
           )}
           <dt>Status</dt>
@@ -104,10 +110,20 @@ export function HoldPage({ holdId }: { holdId: string }) {
           <button type="button" onClick={() => run('pay')} disabled={!canAct}>
             <Icon name="check" />{busy === 'pay' ? 'Paying…' : 'Pay admission fee'}
           </button>
-          <button type="button" className="secondary danger-button" onClick={() => run('cancel')} disabled={!canAct}>
+          <button type="button" className="secondary danger-button" onClick={() => setConfirmingCancel(true)} disabled={!canAct}>
             {busy === 'cancel' ? 'Cancelling…' : 'Cancel application'}
           </button>
         </div>}
+        {status === 'HELD' && confirmingCancel && (
+          <div className="cancel-confirmation" role="group" aria-label="Confirm cancellation">
+            <span className="cancel-icon"><Icon name="info" /></span>
+            <div><strong>Release this seat?</strong><p>The application will be cancelled and another student may take the seat.</p></div>
+            <div className="cancel-confirmation-actions">
+              <button type="button" className="secondary" onClick={() => setConfirmingCancel(false)}>Keep my seat</button>
+              <button type="button" className="cancel-final" onClick={() => run('cancel')} disabled={!canAct}>Yes, cancel</button>
+            </div>
+          </div>
+        )}
         {(status === 'EXPIRED' || status === 'CANCELLED') && <button type="button" onClick={() => navigate('/classes')}>Browse available classes <Icon name="arrow" /></button>}
       </div>
 

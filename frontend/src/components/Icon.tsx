@@ -14,6 +14,12 @@ const paths = {
   people: <><circle cx="9" cy="8" r="3" /><path d="M2 21v-3a7 7 0 0 1 14 0v3M16 5a3 3 0 0 1 0 6M19 14a6 6 0 0 1 3 5v2" /></>,
   info: <><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7h.01" /></>,
   refresh: <><path d="M20 7v5h-5M4 17v-5h5" /><path d="M6 7a7 7 0 0 1 12-1l2 6M4 12l2 6a7 7 0 0 0 12-1" /></>,
+  graduate: <><path d="m2 9 10-5 10 5-10 5L2 9Z" /><path d="M6 11v5c2 2 4 3 6 3s4-1 6-3v-5M22 9v7" /></>,
+  wallet: <><rect x="3" y="6" width="18" height="15" rx="2" /><path d="M3 10h18M7 6V4h12" /><path d="M16 15h2" /></>,
+  shield: <><path d="M12 2 4 5v6c0 5 3 8 8 11 5-3 8-6 8-11V5l-8-3Z" /><path d="m9 12 2 2 4-4" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M8 15h3" /></>,
+  sparkle: <><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2ZM19 17l.6 1.4L21 19l-1.4.6L19 21l-.6-1.4L17 19l1.4-.6L19 17Z" /></>,
+  building: <><path d="M4 21V7l8-4 8 4v14M2 21h20M9 21v-6h6v6M8 9h.01M12 9h.01M16 9h.01M8 12h.01M16 12h.01" /></>,
 };
 
 export type IconName = keyof typeof paths;

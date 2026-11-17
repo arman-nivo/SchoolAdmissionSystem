@@ -22,26 +22,30 @@ export function StudentIdBar() {
 
   return (
     <form className={`student-bar ${studentId ? 'identity-active' : ''}`} onSubmit={submit} aria-label="Student identity" noValidate>
-      <div className="identity-heading"><span className="identity-icon"><Icon name={studentId ? 'check' : 'user'} /></span><div>
-        <label htmlFor="student-id">Student birth registration no.</label>
-        <p id="student-id-help">{studentId ? 'Applications and class actions now use this student number.' : 'Enter the student’s 17-digit number to apply or check applications.'}</p>
-      </div></div>
+      <div className="identity-heading">
+        <span className="identity-icon"><Icon name={studentId ? 'check' : 'user'} /></span>
+        <div>
+          <span className="identity-kicker">STEP 01 · STUDENT DETAILS</span>
+          <label htmlFor="student-id">Birth registration number</label>
+          <p id="student-id-help">{studentId ? 'You can now apply and track this student’s applications.' : 'Enter the student’s 17-digit number to begin.'}</p>
+        </div>
+      </div>
       <div className="identity-controls">
-      <input
-        id="student-id"
-        inputMode="numeric"
-        autoComplete="off"
-        placeholder="e.g. 20152691234567890"
-        aria-describedby={error ? 'student-id-help student-id-error' : 'student-id-help'}
-        aria-invalid={!!error}
-        value={draft}
-        maxLength={17}
-        onChange={(e) => {
-          setDraft(e.target.value.replace(/\D/g, ''));
-          setError('');
-        }}
-      />
-      <button type="submit">Use this number</button>
+        <input
+          id="student-id"
+          inputMode="numeric"
+          autoComplete="off"
+          placeholder="17-digit student number"
+          aria-describedby={error ? 'student-id-help student-id-error' : 'student-id-help'}
+          aria-invalid={!!error}
+          value={draft}
+          maxLength={17}
+          onChange={(e) => {
+            setDraft(e.target.value.replace(/\D/g, ''));
+            setError('');
+          }}
+        />
+        <button type="submit">Use this number <Icon name="arrow" /></button>
       </div>
       {studentId && (
         <span className="student-current">
